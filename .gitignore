@@ -1,0 +1,44 @@
+# Python 가상환경
+venv/
+env/
+ENV/
+
+# Python 캐시 파일
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 빌드 및 배포 파일
+build/
+dist/
+*.exe
+*.zip
+*.spec
+
+# 로그 파일
+logs/
+*.log
+
+# 환경 설정 파일
+.env
+.env.*
+
+# IDE 설정 파일
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Windows 시스템 파일
+Thumbs.db
+desktop.ini
+
+# 기타 임시 파일
+*.bak
+*.tmp
+*~
+
+# cx_Freeze 빌드 파일
+build/
+*.manifest
+*.pdb

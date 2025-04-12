@@ -1,0 +1,7 @@
+# OpenAI API 설정
+OPENAI_API_KEY=your_api_key_here
+
+# 로깅 설정
+ENABLE_LOGGING=false        # 파일 로깅 활성화 여부 (true/false)
+ENABLE_CONSOLE_LOGGING=false  # 콘솔 로깅 활성화 여부 (true/false)
+LOG_LEVEL=DEBUG           # 로그 레벨 (DEBUG/INFO/WARNING/ERROR/CRITICAL)

@@ -11,7 +11,7 @@ class AIButton:
         
         # AI 버튼 생성 (테두리 없는 최소 크기)
         style = ttk.Style()
-        style.configure('AI.TButton', padding=0)
+        style.configure('AI.TButton', padding=2)
         self.button = ttk.Button(
             self.window,
             text="AI",
@@ -65,7 +65,7 @@ class AIPopup:
         
         # 상단 프레임 (닫기 버튼용)
         self.top_frame = tk.Frame(self.frame, bg='white')
-        self.top_frame.pack(fill='x', padx=8, pady=(8,0))
+        self.top_frame.pack(fill='x', padx=8, pady=(2,0))
         
         # 닫기 버튼
         self.close_button = tk.Label(
@@ -73,18 +73,17 @@ class AIPopup:
             text='×',
             bg='white',
             fg='black',
-            font=('맑은 고딕', 10, 'bold'),
+            font=('맑은 고딕', 12, 'bold'),
             cursor='hand2'
         )
         self.close_button.pack(side='right')
         
         # 답변 표시를 위한 스크롤 가능한 프레임
         self.scroll_frame = tk.Frame(self.frame, bg='white')
-        self.scroll_frame.pack(fill='both', expand=True, padx=8, pady=8)
+        self.scroll_frame.pack(fill='both', expand=True, padx=8, pady=(2,8))
         
         # 스크롤바 생성
-        self.scrollbar = tk.Scrollbar(self.scroll_frame)
-        self.scrollbar.pack(side='right', fill='y')
+        self.scrollbar = ttk.Scrollbar(self.scroll_frame)
         
         # 텍스트 위젯 생성 (스크롤 가능)
         self.answer_text = tk.Text(
@@ -94,14 +93,14 @@ class AIPopup:
             bg='white',
             fg='black',
             relief='flat',
-            height=10,
-            width=45,  # 적절한 너비 설정
-            yscrollcommand=self.scrollbar.set,
-            cursor='arrow'  # 텍스트 커서 대신 기본 커서 사용
+            cursor='arrow',  # 텍스트 커서 대신 기본 커서 사용
+            padx=5,
+            pady=1
         )
         self.answer_text.pack(side='left', fill='both', expand=True)
         
         # 스크롤바와 텍스트 위젯 연결
+        self.answer_text.config(yscrollcommand=self._on_scroll)
         self.scrollbar.config(command=self.answer_text.yview)
         
         # 텍스트 위젯을 읽기 전용으로 설정
@@ -113,6 +112,16 @@ class AIPopup:
         self.answer_text.bind('<Button-5>', self._on_mousewheel)  # Linux
         
         self.window.withdraw()
+    
+    def _on_scroll(self, *args):
+        """스크롤 이벤트 처리 및 스크롤바 표시/숨김"""
+        self.scrollbar.set(*args)
+        
+        # 스크롤이 필요한지 확인
+        if float(args[1]) < 1:  # 내용이 창보다 클 경우
+            self.scrollbar.pack(side='right', fill='y')
+        else:  # 내용이 창보다 작을 경우
+            self.scrollbar.pack_forget()
     
     def _on_mousewheel(self, event):
         """마우스 휠 이벤트 처리"""
@@ -138,10 +147,20 @@ class AIPopup:
             # 스크롤을 맨 위로
             self.answer_text.yview_moveto(0)
             
-            # 내용에 따라 창 크기 조정 (최소 225px, 최대 400px)
-            content_height = int(self.answer_text.index('end-1c').split('.')[0])
-            window_height = min(max(225, content_height * 20), 400)  # 줄 수에 따라 높이 조정
+            # 임시로 창을 표시하여 텍스트 높이 계산
+            self.window.geometry("400x1000")  # 충분히 큰 높이로 설정
+            self.window.update_idletasks()
             
+            # 텍스트 높이 계산 (줄 수 * 줄 높이 + 여백)
+            line_count = int(self.answer_text.index('end-1c').split('.')[0])
+            line_height = self.answer_text.winfo_reqheight() / line_count if line_count > 0 else 20
+            text_height = line_count * line_height + 200  # 상하 여백 포함
+            
+            # 최소 225px, 최대 400px로 제한
+            # window_height = min(max(225, int(text_height)), 400)
+            window_height = 250
+            
+            # 최종 창 크기 및 위치 설정
             self.window.geometry(f"400x{window_height}+{x}+{y}")
             self.window.deiconify()
             self.window.lift()

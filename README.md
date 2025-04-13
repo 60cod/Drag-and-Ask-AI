@@ -15,6 +15,7 @@ This program lets you drag text to reveal an AI button, which, when clicked, ins
 - AI button appears when text is dragged
 - Text analysis and responses through OpenAI API
 - Scrollable answer window
+- API key management with user-friendly input window
 - Logging functionality (optional)
 
 ### ⚙️Development Environment Setup
@@ -43,16 +44,11 @@ copy .envSample .env  # Windows
 cp .envSample .env    # Linux/Mac
 ```
 
-5. Open `.env` file and set OpenAI API key:
-```ini
-# OpenAI API Settings
-OPENAI_API_KEY=your_api_key_here  # Replace with your actual API key
-
-# Logging Settings
-ENABLE_LOGGING=false
-ENABLE_CONSOLE_LOGGING=false
-LOG_LEVEL=DEBUG
-```
+5. When you run the program for the first time, it will prompt you to enter your OpenAI API key:
+   - The API key input window will appear automatically.
+   - Enter your OpenAI API key and click "Save". If you do not enter the key, the program will automatically exit.
+   - The key will be saved in the `.env` file.
+   - You can update your API key by restarting the program.
 
 ### 🪄Running the Program
 
@@ -64,7 +60,22 @@ python main.py
 
 1. Hold Ctrl key and drag text anywhere on screen to display the AI button.
 2. Click the AI button to get responses through OpenAI API.
-3. Click the "X" button or outside the answer window to close it.
+3. For long responses, a scrollbar will appear automatically.
+4. Click the "X" button or outside the answer window to close it.
+
+### Logging and Troubleshooting
+
+You can configure logging settings by modifying the following values in your `.env` file:
+```ini
+# Logging Settings
+ENABLE_LOGGING=false        # Enable/disable file logging (true/false)
+ENABLE_CONSOLE_LOGGING=false  # Enable/disable console logging (true/false)
+LOG_LEVEL=DEBUG             # Set log level (DEBUG/INFO/WARNING/ERROR/CRITICAL)
+```
+
+- File logs are saved in the `logs` directory as `debug_YYYYMMDD_HHMMSS.log`.
+- Console logs are displayed in the terminal window in real-time.
+- Log level determines the detail of messages. (DEBUG shows all, ERROR shows only errors)
 
 ### Project Structure
 
@@ -81,7 +92,8 @@ ai-drag/
 │   ├── window_manager.py    # Window management
 ├── services/         # Service modules
 │   ├── clipboard_manager.py  # Clipboard management
-│   └── drag_detector.py      # Drag detection
+│   ├── drag_detector.py      # Drag detection
+│   └── api_key_manager.py    # API key management
 └── utils/           # Utility modules
     └── logger.py          # Logging utility
 ```
@@ -112,6 +124,7 @@ Log file format: `debug_YYYYMMDD_HHMMSS.log`
 - 텍스트 드래그 시 AI 버튼 표시
 - OpenAI API를 통한 텍스트 분석 및 답변
 - 스크롤 가능한 답변 창
+- 사용자 친화적인 API 키 관리
 - 로깅 기능 (선택적 활성화)
 
 ## ⚙️개발 환경 설정
@@ -140,16 +153,11 @@ copy .envSample .env  # Windows
 cp .envSample .env    # Linux
 ```
 
-5. `.env` 파일을 열어 OpenAI API 키 설정:
-```ini
-# OpenAI API 설정
-OPENAI_API_KEY=your_api_key_here  # 실제 API 키로 변경
-
-# 로깅 설정
-ENABLE_LOGGING=false
-ENABLE_CONSOLE_LOGGING=false
-LOG_LEVEL=DEBUG
-```
+5. 프로그램을 처음 실행할 때 OpenAI API 키 입력:
+    - API 키 입력창이 자동으로 나타납니다.
+    - OpenAI API 키를 입력하고 "저장" 버튼을 클릭합니다. 입력하지 않으면 프로그램은 종료됩니다.
+    - 입력한 키는 `.env` 파일에 저장됩니다.
+    - 프로그램을 재시작할 때마다 API 키를 업데이트할 수 있습니다.
 
 ## 🪄프로그램 실행 방법
 
@@ -161,7 +169,22 @@ python main.py
 
 1. 화면의 아무 곳에서나 Ctrl 키를 누른 상태로 텍스트를 드래그하면 AI 버튼이 나타납니다.
 2. AI 버튼을 클릭하면 OpenAI API를 통해 답변을 받아볼 수 있습니다.
-3. 답변 창의 "X" 버튼 또는 창 외부를 클릭하면 창이 닫힙니다.
+3. 긴 답변의 경우 자동으로 스크롤바가 나타납니다.
+4. 답변 창의 "X" 버튼 또는 창 외부를 클릭하면 창이 닫힙니다.
+
+## 로깅 및 문제 해결
+
+`.env` 파일에서 다음 값들을 수정하여 로깅을 설정할 수 있습니다:
+```ini
+# 로깅 설정
+ENABLE_LOGGING=false        # 파일 로깅 활성화 여부 (true/false)
+ENABLE_CONSOLE_LOGGING=false  # 콘솔 로깅 활성화 여부 (true/false)
+LOG_LEVEL=DEBUG             # 로그 레벨 (DEBUG/INFO/WARNING/ERROR/CRITICAL)
+```
+
+- 파일 로그는 `logs` 디렉토리에 `debug_YYYYMMDD_HHMMSS.log` 형식으로 저장됩니다.
+- 콘솔 로그는 터미널 창에 실시간으로 표시됩니다.
+- 로그 레벨에 따라 메시지의 상세도가 결정됩니다. (DEBUG는 모든 내용, ERROR는 오류만 표시)
 
 ## 프로그램 구조
 
@@ -178,7 +201,8 @@ ai-drag/
 │   ├── window_manager.py    # 창 관리
 ├── services/         # 서비스 모듈
 │   ├── clipboard_manager.py  # 클립보드 관리
-│   └── drag_detector.py      # 드래그 감지
+│   ├── drag_detector.py      # 드래그 감지
+│   └── api_key_manager.py    # API 키 관리
 └── utils/           # 유틸리티 모듈
     └── logger.py          # 로깅 유틸리티
 ```
@@ -188,8 +212,3 @@ ai-drag/
 1. OpenAI API 키가 필요하며, API 사용에 따른 비용이 발생할 수 있습니다.
 2. 프로그램 실행 중에는 클립보드 내용이 일시적으로 변경될 수 있습니다.
 3. `.env` 파일에는 개인 API 키가 포함되므로 공유하지 마세요.
-
-## 문제 해결
-
-로그 파일은 `logs` 디렉토리에 저장되며, 문제 발생 시 해당 로그를 확인하시면 도움이 됩니다.
-로그 파일명 형식: `debug_YYYYMMDD_HHMMSS.log` 

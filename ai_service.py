@@ -18,10 +18,10 @@ class AIService:
                 raise ValueError("OpenAI API 키가 설정되지 않았습니다.")
             
             response = await openai.ChatCompletion.acreate(
-                model="gpt-3.5-turbo",  # 더 저렴한 모델 사용
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": "주어진 텍스트에 대해 매우 간결하게 핵심 정보만 설명해주세요. 서론과 결론은 생략하고 본론만 진중하게 답변하세요. 질문 내용을 반복하지 마세요."},
-                    {"role": "user", "content": f"다음 텍스트를 분석해주세요:\n{text}"}
+                    {"role": "user", "content": f"다음 텍스트를 분석해주세요. 글머리 기호를 사용해 요약 형식으로 답변하세요.:\n{text}"}
                 ],
                 max_tokens=300,  # 토큰 수 제한
                 temperature=0.5   # 더 일관된 응답을 위해 temperature 낮춤
